@@ -49,7 +49,7 @@ namespace message_logger {
 namespace log {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define MELO_LOG(level, ...) \
+#define MELO_LOG(logger, level, ...) \
 { \
   switch (level) { \
   case message_logger::log::levels::Fatal: \
@@ -70,7 +70,7 @@ namespace log {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define MELO_LOG_STREAM(level, message) \
+#define MELO_LOG_STREAM(logger, level, message) \
     { \
       switch (level) { \
       case message_logger::log::levels::Fatal: \
@@ -91,7 +91,7 @@ namespace log {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define MELO_LOG_FP(level, ...) \
+#define MELO_LOG_FP(logger, level, ...) \
     { \
       std::stringstream melo_stringstream; \
       message_logger::common::internal::source_file_pos sfp(__FUNCTION__,__FILE__,__LINE__); \
@@ -100,7 +100,7 @@ namespace log {
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define MELO_LOG_STREAM_FP(level, message) \
+#define MELO_LOG_STREAM_FP(logger, level, message) \
     { \
       std::stringstream melo_stringstream; \
       message_logger::common::internal::source_file_pos sfp(__FUNCTION__,__FILE__,__LINE__); \
@@ -109,26 +109,26 @@ namespace log {
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define MELO_LOG_THROTTLE(rate, level, ...) \
+#define MELO_LOG_THROTTLE(logger, rate, level, ...) \
     { \
       static double last_hit = 0.0; \
       ::message_logger::time::TimeStd now = ::message_logger::time::TimeStd::now(); \
       if (last_hit + rate <= now.toSec()) \
       { \
         last_hit = now.toSec(); \
-        MELO_LOG(level, __VA_ARGS__) \
+        MELO_LOG(logger, level, __VA_ARGS__) \
       } \
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#define MELO_LOG_THROTTLE_STREAM(rate, level, message) \
+#define MELO_LOG_THROTTLE_STREAM(logger, rate, level, message) \
   { \
     static double last_hit = 0.0; \
     ::message_logger::time::TimeStd now = ::message_logger::time::TimeStd::now(); \
     if (last_hit + rate <= now.toSec()) \
     { \
       last_hit = now.toSec(); \
-      MELO_LOG_STREAM(level, message) \
+      MELO_LOG_STREAM(logger, level, message) \
     } \
 }
 
